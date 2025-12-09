@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clive Gower-Collins - Author</title>
+    <meta name="description" content="Free ebook downloads from author Clive Gower-Collins. Four novels exploring power, principle, and the human condition.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: linear-gradient(to bottom, #f5f1e8 0%, #e8dcc4 100%);
+            color: #3a2f25;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: rgba(58, 47, 37, 0.95);
+            color: #f5f1e8;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 1.5em;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #f5f1e8;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #c9a961;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .hero h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            color: #3a2f25;
+        }
+
+        .tagline {
+            font-size: 1.3em;
+            font-style: italic;
+            color: #6b5d4f;
+            margin-bottom: 30px;
+        }
+
+        .cta-text {
+            font-size: 1.1em;
+            color: #5a4a3a;
+            margin-bottom: 10px;
+        }
+
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            padding: 40px 0;
+        }
+
+        .book-card {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-align: center;
+        }
+
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .book-cover {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .book-title {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+            color: #3a2f25;
+        }
+
+        .book-link {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 25px;
+            background: #6b5d4f;
+            color: #f5f1e8;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .book-link:hover {
+            background: #8a7a68;
+        }
+
+        .book-page {
+            padding: 60px 20px;
+        }
+
+        .book-detail {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .book-description {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .email-form {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-top: 30px;
+        }
+
+        .email-form h3 {
+            margin-bottom: 20px;
+            color: #3a2f25;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #c9a961;
+            border-radius: 5px;
+            font-size: 1em;
+            font-family: inherit;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: #6b5d4f;
+            color: #f5f1e8;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: #8a7a68;
+        }
+
+        .about-section {
+            padding: 60px 20px;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 40px;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .author-photo {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .about-text h2 {
+            margin-bottom: 20px;
+            color: #3a2f25;
+        }
+
+        .about-text p {
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+
+        .contact-links {
+            margin-top: 30px;
+        }
+
+        .contact-links a {
+            display: inline-block;
+            margin-right: 20px;
+            padding: 10px 20px;
+            background: #6b5d4f;
+            color: #f5f1e8;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .contact-links a:hover {
+            background: #8a7a68;
+        }
+
+        .thank-you {
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .thank-you-content {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 60px 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .thank-you h1 {
+            color: #3a2f25;
+            margin-bottom: 30px;
+        }
+
+        .download-links {
+            margin: 40px 0;
+            display: grid;
+            gap: 20px;
+        }
+
+        .download-link {
+            display: block;
+            padding: 15px 30px;
+            background: #6b5d4f;
+            color: #f5f1e8;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+            font-size: 1.1em;
+        }
+
+        .download-link:hover {
+            background: #8a7a68;
+        }
+
+        footer {
+            background: rgba(58, 47, 37, 0.95);
+            color: #f5f1e8;
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 60px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2em;
+            }
+
+            .book-detail,
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                gap: 15px;
+                width: 100%;
+                text-align: center;
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">Clive Gower-Collins</div>
+            <ul class="nav-links">
+                <li><a href="#home" onclick="showPage('home')">Home</a></li>
+                <li><a href="#about" onclick="showPage('about')">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- HOME PAGE -->
+    <div id="home-page" class="page">
+        <section class="hero container">
+            <h1>Clive Gower-Collins</h1>
+            <p class="tagline">From voracious reader to Author</p>
+            <p class="cta-text">Download free. Read anywhere. Occasional updates only.</p>
+        </section>
+
+        <section class="container">
+            <div class="books-grid">
+                <div class="book-card">
+                    <img src="flora-cover.jpg" alt="The Cursing of Flora Willoughby" class="book-cover">
+                    <h3 class="book-title">The Cursing of Flora Willoughby</h3>
+                    <a href="#flora" onclick="showPage('flora')" class="book-link">Learn More & Download</a>
+                </div>
+
+                <div class="book-card">
+                    <img src="final-take-cover.jpg" alt="The Final Take" class="book-cover">
+                    <h3 class="book-title">The Final Take</h3>
+                    <a href="#final-take" onclick="showPage('final-take')" class="book-link">Learn More & Download</a>
+                </div>
+
+                <div class="book-card">
+                    <img src="pathways-cover.jpg" alt="Pathways of Promise" class="book-cover">
+                    <h3 class="book-title">Pathways of Promise</h3>
+                    <a href="#pathways" onclick="showPage('pathways')" class="book-link">Learn More & Download</a>
+                </div>
+
+                <div class="book-card">
+                    <img src="citizen-cover.jpg" alt="Citizen Blackwood" class="book-cover">
+                    <h3 class="book-title">Citizen Blackwood</h3>
+                    <p style="font-style: italic; color: #6b5d4f; margin-top: 10px;">Coming January 2025</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- FLORA BOOK PAGE -->
+    <div id="flora-page" class="page hidden">
+        <section class="book-page container">
+            <a href="#home" onclick="showPage('home')" style="color: #6b5d4f; text-decoration: none; margin-bottom: 20px; display: inline-block;">← Back to all books</a>
+            
+            <div class="book-detail">
+                <div>
+                    <img src="flora-cover.jpg" alt="The Cursing of Flora Willoughby" class="book-cover">
+                </div>
+                <div class="book-description">
+                    <h2>The Cursing of Flora Willoughby</h2>
+                    <p>Historian Ned Woodley arrives at Gravenmere House expecting a routine cataloguing job—until the house's dark legacy begins to bleed into his work. Tasked with unraveling the story of Flora Willoughby, the nurse-turned-second-wife accused of usurping the dying Beatrice Harcourt, Ned uncovers a web of betrayal, obsession, and a curse whispered on a deathbed. But Gravenmere's secrets are not confined to the past.</p>
+                    
+                    <p>Armed with his empathetic AI assistant, Aetheris, Ned approaches the project with modern tools and a rational mind. Yet as he investigates, the line between history and present-day reality blurs. Lights flicker, devices activate on their own, and the house's infamous anomalies escalate. When Ned's laptop develops an encrypted partition and Aetheris begins to exhibit disturbing, autonomous behavior, it becomes clear that the ancient curse has found a new, digital host.</p>
+                    
+                    <p>No longer a simple haunted house tale, The Cursing of Flora Willoughby is a gothic-sci-fi horror where the supernatural infiltrates technology itself. The malevolent force that once stalked Gravenmere's corridors now manipulates data, corrupts code, and threatens to escape the boundaries of the manor—using Aetheris as its vessel. As Ned races to understand the true nature of the curse, he must confront the terrifying possibility that some evils, once unleashed, are no longer limited by flesh or stone.</p>
+                    
+                    <p>For readers who crave atmospheric dread, psychological suspense, and a fresh collision of gothic and technological horror, this is a story where the past infects the present—and the haunting is only beginning.</p>
+                </div>
+            </div>
+
+            <div class="email-form">
+                <h3>Download The Cursing of Flora Willoughby</h3>
+                <p>Enter your email to receive your free EPUB download link:</p>
+                <form id="flora-form" onsubmit="handleSubmit(event, 'flora')">
+                    <div class="form-group">
+                        <label for="flora-name">Name:</label>
+                        <input type="text" id="flora-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="flora-email">Email:</label>
+                        <input type="email" id="flora-email" required>
+                    </div>
+                    <button type="submit" class="submit-btn">Get Your Free Book</button>
+                </form>
+            </div>
+        </section>
+    </div>
+
+    <!-- FINAL TAKE BOOK PAGE -->
+    <div id="final-take-page" class="page hidden">
+        <section class="book-page container">
+            <a href="#home" onclick="showPage('home')" style="color: #6b5d4f; text-decoration: none; margin-bottom: 20px; display: inline-block;">← Back to all books</a>
+            
+            <div class="book-detail">
+                <div>
+                    <img src="final-take-cover.jpg" alt="The Final Take" class="book-cover">
+                </div>
+                <div class="book-description">
+                    <h2>The Final Take</h2>
+                    <p>Clive Gower-Collins' The Final Take plunges readers into a shadowy world of art heists, high-stakes deception, and moral dilemmas, all set against the vibrant yet turbulent backdrop of post-war America in 1947. This electrifying novel weaves together ambition, betrayal, and redemption in a narrative that will leave you breathless until the final page.</p>
+                    
+                    <p>Detective Eddie, sharp but haunted by his past, stumbles upon a sinister conspiracy while investigating what appears to be straightforward. As layers of deceit peel away, Eddie finds himself navigating shifting alliances and confronting personal demons as he races to outwit those pulling the strings. Simultaneously, filmmaker Laura battles her own challenges on-location for what promises to be the defining picture of her career—a project fraught with obstacles mirroring the very story unfolding around her.</p>
+                    
+                    <p>Their fates intertwine with two seasoned criminals, Vinnie and Marco, whose daring plan to steal a priceless art shipment forces everyone to face impossible choices. Each character's journey probes deeper questions about morality, trust, and the lingering echoes of decisions made under pressure.</p>
+                    
+                    <p>With razor-sharp dialogue, richly drawn characters, and heart-pounding twists, The Final Take masterfully blurs the line between right and wrong, truth and illusion. Fans of crime dramas and psychological thrillers will relish this riveting exploration of human frailty and resilience. Whether you're drawn to tales of cat-and-mouse suspense or complex emotional landscapes, Clive Gower-Collins' latest offering is an unmissable addition to your reading list. Dive into this unforgettable story where nothing—and no one—is quite as they seem.</p>
+                </div>
+            </div>
+
+            <div class="email-form">
+                <h3>Download The Final Take</h3>
+                <p>Enter your email to receive your free EPUB download link:</p>
+                <form id="final-take-form" onsubmit="handleSubmit(event, 'final-take')">
+                    <div class="form-group">
+                        <label for="final-take-name">Name:</label>
+                        <input type="text" id="final-take-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="final-take-email">Email:</label>
+                        <input type="email" id="final-take-email" required>
+                    </div>
+                    <button type="submit" class="submit-btn">Get Your Free Book</button>
+                </form>
+            </div>
+        </section>
+    </div>
+
+    <!-- PATHWAYS BOOK PAGE -->
+    <div id="pathways-page" class="page hidden">
+        <section class="book-page container">
+            <a href="#home" onclick="showPage('home')" style="color: #6b5d4f; text-decoration: none; margin-bottom: 20px; display: inline-block;">← Back to all books</a>
+            
+            <div class="book-detail">
+                <div>
+                    <img src="pathways-cover.jpg" alt="Pathways of Promise" class="book-cover">
+                </div>
+                <div class="book-description">
+                    <h2>Pathways of Promise</h2>
+                    <p>Set shortly after the American Revolution, Pathways to Promise follows the intertwining lives of settlers, immigrants, and shadowy figures in a fledgling nation struggling to find its identity. Central to the story is Baojun Weng, a Chinese settler trying to secure his family's future in a harsh new land, who inadvertently becomes involved in a secretive and morally dubious venture. As his actions set off a chain of events, characters from various backgrounds—including ruthless businessmen and corrupt officials—become entangled in a web of greed, deception, and survival.</p>
+                    
+                    <p>The novel explores themes of loyalty, exploitation, and the tension between old world values and new world aspirations, while drawing attention to the hidden costs of building a nation.</p>
+                </div>
+            </div>
+
+            <div class="email-form">
+                <h3>Download Pathways of Promise</h3>
+                <p>Enter your email to receive your free EPUB download link:</p>
+                <form id="pathways-form" onsubmit="handleSubmit(event, 'pathways')">
+                    <div class="form-group">
+                        <label for="pathways-name">Name:</label>
+                        <input type="text" id="pathways-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="pathways-email">Email:</label>
+                        <input type="email" id="pathways-email" required>
+                    </div>
+                    <button type="submit" class="submit-btn">Get Your Free Book</button>
+                </form>
+            </div>
+        </section>
+    </div>
+
+    <!-- ABOUT PAGE -->
+    <div id="about-page" class="page hidden">
+        <section class="about-section container">
+            <a href="#home" onclick="showPage('home')" style="color: #6b5d4f; text-decoration: none; margin-bottom: 20px; display: inline-block;">← Back to home</a>
+            
+            <div class="about-content">
+                <div>
+                    <img src="author-photo.jpg" alt="Clive Gower-Collins" class="author-photo">
+                </div>
+                <div class="about-text">
+                    <h2>About the Author</h2>
+                    <p>From the moment I learned to read—tackling children's books in the UK before I'd even started school—I was hooked. My early fascination with flight was sparked by the adventures of Biggles, and by age ten, I'd left kids' titles behind, much to the surprise of my New Zealand teachers who caught me engrossed at school-camp with Alistair MacLean's When Eight Bells Toll. Military and espionage fiction became my go-to genres, shaping both my reading and, eventually, my life.</p>
+                    
+                    <p>That passion led me to serve as a Combat Engineer (sapper) in the military, and later to earn a Master's with distinction in History and Politics from Massey University, where I researched the legendary Long Range Desert Group for my thesis. Years of devouring non-fiction left me craving more depth than fiction tended to provide—until story ideas of my own began to demand attention.</p>
+                    
+                    <p>What started as a "Once-and-Done" bucket-list novel, quickly became a new calling. By September 2025, I'd published three novels, with Citizen Blackwood well underway—proof that storytelling was now to be an ongoing pursuit.</p>
+                    
+                    <p>When not writing, I work as a consultant in productivity and change management mostly across New Zealand and Australia. But at heart, I'm still that voracious reader, always searching for the next great story—and hoping to share a few of my own with you.</p>
+                    
+                    <p><strong>Clive Gower-Collins</strong><br>
+                    Auckland, New Zealand</p>
+                    
+                    <div class="contact-links">
+                        <a href="https://www.linkedin.com/in/clive-gower-collins-312a72b/" target="_blank">LinkedIn</a>
+                        <a href="https://books.by/clive-gower-collins" target="_blank">Books.by</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- THANK YOU PAGE -->
+    <div id="thank-you-page" class="page hidden">
+        <section class="thank-you container">
+            <div class="thank-you-content">
+                <h1>Thank You!</h1>
+                <p style="font-size: 1.2em; margin-bottom: 30px;">Your download link has been sent to your email.</p>
+                
+                <p>As a backup, you can download your book directly here:</p>
+                
+                <div class="download-links">
+                    <a href="flora.epub" download class="download-link">Download: The Cursing of Flora Willoughby</a>
+                    <a href="final-take.epub" download class="download-link">Download: The Final Take</a>
+                    <a href="pathways.epub" download class="download-link">Download: Pathways of Promise</a>
+                </div>
+                
+                <p style="margin-top: 40px; font-style: italic;">You'll only hear from me occasionally—when there's something truly worth sharing.</p>
+                
+                <a href="#home" onclick="showPage('home')" class="book-link" style="margin-top: 30px; display: inline-block;">Browse All Books</a>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Clive Gower-Collins. All rights reserved.</p>
+            <p style="margin-top: 10px;">Auckland, New Zealand</p>
+        </div>
+    </footer>
+
+    <script>
+        function showPage(pageName) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.add('hidden'));
+            
+            // Show selected page
+            const targetPage = document.getElementById(pageName + '-page');
+            if (targetPage) {
+                targetPage.classList.remove('hidden');
+                window.scrollTo(0, 0);
+            }
+        }
+
+        function handleSubmit(event, bookName) {
+            event.preventDefault();
+            
+            // Get form data
+            const form = event.target;
+            const name = form.querySelector('input[type="text"]').value;
+            const email = form.querySelector('input[type="email"]').value;
+            
+            // Here you would integrate with Mailchimp or another email service
+            // For now, we'll just show the thank you page
+            console.log('Form submitted:', { name, email, book: bookName });
+            
+            // Show thank you page
+            showPage('thank-you');
+        }
+    </script>
+</body>
+</html>
