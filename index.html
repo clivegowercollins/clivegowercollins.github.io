@@ -371,6 +371,24 @@
                     <p style="font-style: italic; color: #6b5d4f; margin-top: 10px;">Coming January 2025</p>
                 </div>
             </div>
+
+            <!-- Optional Mailing List Signup -->
+            <div class="email-form" style="max-width: 600px; margin: 60px auto;">
+                <h3>Stay Updated</h3>
+                <p>Want to know when new books release? Join the list.</p>
+                <p style="font-size: 0.9em; font-style: italic; color: #6b5d4f; margin-bottom: 20px;">I respect your inbox—occasional updates only. Your information is never sold or shared.</p>
+                <form action="https://formspree.io/f/xdkqwkkb" method="POST">
+                    <div class="form-group">
+                        <label for="signup-name">Name:</label>
+                        <input type="text" id="signup-name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-email">Email:</label>
+                        <input type="email" id="signup-email" name="email" required>
+                    </div>
+                    <button type="submit" class="submit-btn">Join the List</button>
+                </form>
+            </div>
         </section>
     </div>
 
@@ -397,18 +415,8 @@
 
             <div class="email-form">
                 <h3>Download The Cursing of Flora Willoughby</h3>
-                <p>Enter your email to receive your free EPUB download link:</p>
-                <form id="flora-form" onsubmit="handleSubmit(event, 'flora')">
-                    <div class="form-group">
-                        <label for="flora-name">Name:</label>
-                        <input type="text" id="flora-name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="flora-email">Email:</label>
-                        <input type="email" id="flora-email" required>
-                    </div>
-                    <button type="submit" class="submit-btn">Get Your Free Book</button>
-                </form>
+                <p>Your free EPUB is ready. No signup required.</p>
+                <a href="flora.epub" download class="submit-btn" style="display: block; text-align: center; text-decoration: none;">Download Now</a>
             </div>
         </section>
     </div>
@@ -436,18 +444,8 @@
 
             <div class="email-form">
                 <h3>Download The Final Take</h3>
-                <p>Enter your email to receive your free EPUB download link:</p>
-                <form id="final-take-form" onsubmit="handleSubmit(event, 'final-take')">
-                    <div class="form-group">
-                        <label for="final-take-name">Name:</label>
-                        <input type="text" id="final-take-name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="final-take-email">Email:</label>
-                        <input type="email" id="final-take-email" required>
-                    </div>
-                    <button type="submit" class="submit-btn">Get Your Free Book</button>
-                </form>
+                <p>Your free EPUB is ready. No signup required.</p>
+                <a href="final-take.epub" download class="submit-btn" style="display: block; text-align: center; text-decoration: none;">Download Now</a>
             </div>
         </section>
     </div>
@@ -471,18 +469,8 @@
 
             <div class="email-form">
                 <h3>Download Pathways of Promise</h3>
-                <p>Enter your email to receive your free EPUB download link:</p>
-                <form id="pathways-form" onsubmit="handleSubmit(event, 'pathways')">
-                    <div class="form-group">
-                        <label for="pathways-name">Name:</label>
-                        <input type="text" id="pathways-name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="pathways-email">Email:</label>
-                        <input type="email" id="pathways-email" required>
-                    </div>
-                    <button type="submit" class="submit-btn">Get Your Free Book</button>
-                </form>
+                <p>Your free EPUB is ready. No signup required.</p>
+                <a href="pathways.epub" download class="submit-btn" style="display: block; text-align: center; text-decoration: none;">Download Now</a>
             </div>
         </section>
     </div>
@@ -522,18 +510,16 @@
     <div id="thank-you-page" class="page hidden">
         <section class="thank-you container">
             <div class="thank-you-content">
-                <h1>Thank You!</h1>
-                <p style="font-size: 1.2em; margin-bottom: 30px;">Your download link has been sent to your email.</p>
+                <h1>Thank You for Joining!</h1>
+                <p style="font-size: 1.2em; margin-bottom: 30px;">You'll hear from me when there's something worth sharing—new releases, updates, or the occasional behind-the-scenes insight.</p>
                 
-                <p>As a backup, you can download your book directly here:</p>
+                <p style="font-style: italic;">In the meantime, feel free to explore all the books:</p>
                 
                 <div class="download-links">
                     <a href="flora.epub" download class="download-link">Download: The Cursing of Flora Willoughby</a>
                     <a href="final-take.epub" download class="download-link">Download: The Final Take</a>
                     <a href="pathways.epub" download class="download-link">Download: Pathways of Promise</a>
                 </div>
-                
-                <p style="margin-top: 40px; font-style: italic;">You'll only hear from me occasionally—when there's something truly worth sharing.</p>
                 
                 <a href="#home" onclick="showPage('home')" class="book-link" style="margin-top: 30px; display: inline-block;">Browse All Books</a>
             </div>
@@ -544,6 +530,7 @@
         <div class="container">
             <p>&copy; 2025 Clive Gower-Collins. All rights reserved.</p>
             <p style="margin-top: 10px;">Auckland, New Zealand</p>
+            <p style="margin-top: 15px; font-size: 0.9em; font-style: italic;">Privacy Pledge: Your information is never sold, shared, or misused. Downloads are free and require no personal data.</p>
         </div>
     </footer>
 
@@ -559,22 +546,6 @@
                 targetPage.classList.remove('hidden');
                 window.scrollTo(0, 0);
             }
-        }
-
-        function handleSubmit(event, bookName) {
-            event.preventDefault();
-            
-            // Get form data
-            const form = event.target;
-            const name = form.querySelector('input[type="text"]').value;
-            const email = form.querySelector('input[type="email"]').value;
-            
-            // Here you would integrate with Mailchimp or another email service
-            // For now, we'll just show the thank you page
-            console.log('Form submitted:', { name, email, book: bookName });
-            
-            // Show thank you page
-            showPage('thank-you');
         }
     </script>
 </body>
