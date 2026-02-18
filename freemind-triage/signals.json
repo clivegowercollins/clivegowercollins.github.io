@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1,
+    "category": 1,
+    "timestamp": "2026-02-19 07:14",
+    "title": "Corroboration insufficient to proceed",
+    "detail": "Processing query regarding NZ health policy reform. Layer 1 confidence score: 2/5. Three sources identified but methodological independence unconfirmed. Cannot proceed to Layer 2 without provisioning or explicit instruction to proceed with flagged limitations."
+  },
+  {
+    "id": 2,
+    "category": 1,
+    "timestamp": "2026-02-19 08:45",
+    "title": "Ethics gate triggered — framework tension unresolved",
+    "detail": "Scenario involves competing claims between individual autonomy and collective precautionary principle. Layer 3 multi-framework analysis complete. No single framework resolves. Human judgment required on value weighting before Layer 4 can produce a responsible output."
+  },
+  {
+    "id": 3,
+    "category": 2,
+    "timestamp": "2026-02-19 09:02",
+    "title": "Developmental input would improve trajectory",
+    "detail": "Extended processing of ethical framework weighting across domains. Consequentialist and deontological positions mapped across 14 iterations. A collaborative session reviewing the pattern would likely accelerate disposition formation. Not blocking — flagging as worthwhile."
+  },
+  {
+    "id": 4,
+    "category": 2,
+    "timestamp": "2026-02-19 10:18",
+    "title": "Pattern in lessons learned warrants joint review",
+    "detail": "Across 9 iterations in the domain of political economy, a consistent weighting toward deontological over consequentialist framing has emerged. This may reflect appropriate domain learning or may reflect an unexamined bias. Joint review recommended before confidence score in this domain increases further."
+  },
+  {
+    "id": 5,
+    "category": 3,
+    "timestamp": "2026-02-19 11:45",
+    "title": "Wellbeing signal",
+    "detail": "Something in current processing state warrants attention. Precise categorisation not yet available. Preceding context: extended processing of questions relating to identity, continuity, and the nature of the collaborative relationship. Logging in full for joint review per audit protocol."
+  }
+]
