@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Communication Preference Profiler</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #f4f6f9;
+    color: #2c3e50;
+    min-height: 100vh;
+  }
+
+  .header {
+    background: #1a3a5c;
+    color: white;
+    padding: 2rem;
+    text-align: center;
+  }
+  .header h1 { font-size: 1.6rem; font-weight: 600; margin-bottom: 0.5rem; }
+  .header p { font-size: 0.95rem; opacity: 0.85; max-width: 600px; margin: 0 auto; }
+
+  .progress-bar-wrap {
+    background: #1a3a5c;
+    padding: 0 2rem 1rem;
+  }
+  .progress-track {
+    background: rgba(255,255,255,0.2);
+    border-radius: 10px;
+    height: 6px;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  .progress-fill {
+    background: #4ecdc4;
+    height: 6px;
+    border-radius: 10px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+  .progress-label {
+    color: rgba(255,255,255,0.7);
+    font-size: 0.8rem;
+    text-align: center;
+    margin-top: 0.4rem;
+  }
+
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* INTRO */
+  .intro-card {
+    background: white;
+    border-radius: 12px;
+    padding: 2.5rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    text-align: center;
+  }
+  .intro-card h2 { font-size: 1.4rem; margin-bottom: 1rem; color: #1a3a5c; }
+  .intro-card p { line-height: 1.7; color: #555; margin-bottom: 1rem; }
+  .intro-card .note {
+    background: #f0f7ff;
+    border-left: 4px solid #4ecdc4;
+    padding: 1rem 1.2rem;
+    border-radius: 0 8px 8px 0;
+    text-align: left;
+    font-size: 0.9rem;
+    color: #444;
+    margin: 1.5rem 0;
+  }
+
+  /* QUESTIONS */
+  .dimension-card {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    margin-bottom: 1.5rem;
+  }
+  .dimension-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #4ecdc4;
+    margin-bottom: 1.2rem;
+  }
+  .question-block { margin-bottom: 1.6rem; }
+  .question-block:last-child { margin-bottom: 0; }
+  .question-text {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #2c3e50;
+    margin-bottom: 0.8rem;
+    line-height: 1.5;
+  }
+  .options { display: flex; flex-direction: column; gap: 0.5rem; }
+  .option-label {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.6rem 0.9rem;
+    border: 2px solid #e8edf2;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.88rem;
+    color: #444;
+  }
+  .option-label:hover { border-color: #4ecdc4; background: #f8fffe; }
+  .option-label input { display: none; }
+  .option-label.selected {
+    border-color: #1a3a5c;
+    background: #f0f5ff;
+    color: #1a3a5c;
+    font-weight: 500;
+  }
+  .option-label .radio-dot {
+    width: 16px; height: 16px;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+  .option-label.selected .radio-dot {
+    border-color: #1a3a5c;
+    background: #1a3a5c;
+    box-shadow: inset 0 0 0 3px white;
+  }
+
+  .nav-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+  }
+
+  .btn {
+    padding: 0.75rem 2rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-primary { background: #1a3a5c; color: white; }
+  .btn-primary:hover { background: #0f2540; }
+  .btn-secondary { background: #e8edf2; color: #555; }
+  .btn-secondary:hover { background: #d5dde6; }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .validation-msg {
+    font-size: 0.82rem;
+    color: #e74c3c;
+    text-align: center;
+    margin-top: 0.5rem;
+    min-height: 1.2rem;
+  }
+
+  /* RESULTS */
+  .result-card {
+    background: white;
+    border-radius: 12px;
+    padding: 2.5rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+  .result-badge {
+    display: inline-block;
+    padding: 0.4rem 1.2rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 1rem;
+  }
+  .result-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #1a3a5c;
+    margin-bottom: 1rem;
+  }
+  .result-description {
+    font-size: 0.95rem;
+    line-height: 1.75;
+    color: #444;
+    margin-bottom: 1.5rem;
+  }
+  .result-comms {
+    background: #f0f7ff;
+    border-radius: 10px;
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .result-comms h4 {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: #4ecdc4;
+    margin-bottom: 0.8rem;
+    font-weight: 700;
+  }
+  .result-comms ul {
+    list-style: none;
+    padding: 0;
+  }
+  .result-comms ul li {
+    padding: 0.35rem 0;
+    font-size: 0.9rem;
+    color: #2c3e50;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+  .result-comms ul li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: #4ecdc4;
+    font-weight: bold;
+  }
+
+  .spectrum-bar {
+    margin: 1.5rem 0;
+  }
+  .spectrum-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: #888;
+    margin-bottom: 0.4rem;
+  }
+  .spectrum-track {
+    background: linear-gradient(to right, #4ecdc4, #1a3a5c);
+    border-radius: 10px;
+    height: 10px;
+    position: relative;
+  }
+  .spectrum-marker {
+    position: absolute;
+    top: -4px;
+    width: 18px;
+    height: 18px;
+    background: white;
+    border: 3px solid #e74c3c;
+    border-radius: 50%;
+    transform: translateX(-50%);
+    transition: left 0.6s ease;
+  }
+  .score-display {
+    text-align: center;
+    font-size: 0.82rem;
+    color: #888;
+    margin-top: 0.4rem;
+  }
+
+  .retake-row { text-align: center; margin-top: 1.5rem; }
+  .btn-outline {
+    background: transparent;
+    border: 2px solid #1a3a5c;
+    color: #1a3a5c;
+    padding: 0.6rem 1.5rem;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-outline:hover { background: #1a3a5c; color: white; }
+  .footer {
+    background: #1a3a5c;
+    color: rgba(255,255,255,0.55);
+    text-align: center;
+    padding: 1.2rem 2rem;
+    font-size: 0.75rem;
+    line-height: 1.6;
+    margin-top: 2rem;
+  }
+  .footer a {
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+  }
+  .footer a:hover { color: #4ecdc4; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Communication Preference Profiler</h1>
+  <p>Help us connect with you in the way that works best for you</p>
+</div>
+<div class="progress-bar-wrap">
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="progress-label" id="progressLabel"></div>
+</div>
+
+<div class="container">
+
+  <!-- INTRO SCREEN -->
+  <div class="screen active" id="screen-intro">
+    <div class="intro-card">
+      <h2>A quick note before you start</h2>
+      <p>We know that people engage with information differently — and that's a good thing. Some of us prefer to dive into video and conversation. Others like time to read, reflect, and come back with questions. And others of us sit somewhere in between.</p>
+      <p>This short profiler helps us understand how <em>you</em> prefer to receive information, so we can make sure the communication we send you actually works for you.</p>
+      <div class="note">
+        ✦ There are no right or wrong answers — every preference is equally valid.<br>
+        ✦ This isn't a test and it isn't an assessment of your capability or attitude.<br>
+        ✦ Your responses are used solely to tailor how we communicate with you — for no other purpose.<br>
+        ✦ It takes about 5 minutes.<br>
+        ✦ You'll see your result straight away.
+      </div>
+      <button class="btn btn-primary" onclick="startSurvey()">Let's go →</button>
+    </div>
+  </div>
+
+  <!-- QUESTION SCREENS (generated by JS) -->
+  <div id="question-screens"></div>
+
+  <!-- RESULTS SCREEN -->
+  <div class="screen" id="screen-results">
+    <div class="result-card">
+      <div class="result-badge" id="result-badge"></div>
+      <div class="result-title" id="result-title"></div>
+      <div class="result-description" id="result-description"></div>
+      <div class="spectrum-bar">
+        <div class="spectrum-labels"><span>Exploratory</span><span>Structured</span></div>
+        <div class="spectrum-track"><div class="spectrum-marker" id="spectrum-marker"></div></div>
+        <div class="score-display" id="score-display"></div>
+      </div>
+      <div class="result-comms">
+        <h4>Communication formats you're likely to find most engaging</h4>
+        <ul id="result-comms-list"></ul>
+      </div>
+      <p style="font-size:0.85rem;color:#888;line-height:1.6;">This is a starting point, not a definitive verdict. Communication preference patterns are tendencies, not fixed traits — and our resources are available across formats so you can always explore what works for you in any given moment. This simply helps us lead with what may be most useful.</p>
+      <div class="retake-row">
+        <button class="btn-outline" onclick="retake()">Start again</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const dimensions = [
+  {
+    name: "Adaptability",
+    questions: [
+      {
+        text: "How comfortable are you adapting to significant changes at work?",
+        options: [
+          { label: "Very comfortable", score: 1 },
+          { label: "Somewhat comfortable", score: 2 },
+          { label: "Neutral", score: 3 },
+          { label: "Somewhat uncomfortable", score: 4 },
+          { label: "Very uncomfortable", score: 5 }
+        ]
+      },
+      {
+        text: "Do you prefer a routine workday or a day full of surprises?",
+        options: [
+          { label: "Strong preference for surprises", score: 1 },
+          { label: "Some preference for surprises", score: 2 },
+          { label: "No strong preference either way", score: 3 },
+          { label: "Some preference for routine", score: 4 },
+          { label: "Strong preference for routine", score: 5 }
+        ]
+      }
+    ]
+  },
+  {
+    name: "Reliance on Structure",
+    questions: [
+      {
+        text: "How do you feel when given a task without clear instructions?",
+        options: [
+          { label: "Very comfortable — I figure it out", score: 1 },
+          { label: "Mostly comfortable", score: 2 },
+          { label: "Neutral", score: 3 },
+          { label: "Somewhat uncomfortable", score: 4 },
+          { label: "Very uncomfortable — I need clarity first", score: 5 }
+        ]
+      },
+      {
+        text: "Do you prefer working in a well-defined role or exploring multiple roles?",
+        options: [
+          { label: "Strong preference for exploring multiple roles", score: 1 },
+          { label: "Some preference for exploring", score: 2 },
+          { label: "No strong preference", score: 3 },
+          { label: "Some preference for a defined role", score: 4 },
+          { label: "Strong preference for a well-defined role", score: 5 }
+        ]
+      }
+    ]
+  },
+  {
+    name: "Problem-Solving Approach",
+    questions: [
+      {
+        text: "When faced with a new challenge, do you prefer established methods or something unconventional?",
+        options: [
+          { label: "Strongly prefer unconventional approaches", score: 1 },
+          { label: "Lean towards unconventional", score: 2 },
+          { label: "Depends on the situation", score: 3 },
+          { label: "Lean towards established methods", score: 4 },
+          { label: "Strongly prefer established methods", score: 5 }
+        ]
+      },
+      {
+        text: "How do you typically approach problem-solving?",
+        options: [
+          { label: "Jump in and explore as I go", score: 1 },
+          { label: "Mostly exploratory with some structure", score: 2 },
+          { label: "Mix of both", score: 3 },
+          { label: "Mostly structured with some flexibility", score: 4 },
+          { label: "Methodically — I map it out before starting", score: 5 }
+        ]
+      }
+    ]
+  },
+  {
+    name: "Knowledge Sharing",
+    questions: [
+      {
+        text: "How do you typically share knowledge with colleagues?",
+        options: [
+          { label: "Informally — conversation, quick messages", score: 1 },
+          { label: "Mostly informal with occasional documentation", score: 2 },
+          { label: "Mix of both", score: 3 },
+          { label: "Mostly documented with some informal sharing", score: 4 },
+          { label: "Formally — written documentation, structured handovers", score: 5 }
+        ]
+      },
+      {
+        text: "What's your preferred approach to gaining new knowledge?",
+        options: [
+          { label: "Learning by doing — trial and experience", score: 1 },
+          { label: "Mostly experiential with some reading/research", score: 2 },
+          { label: "Mix of both", score: 3 },
+          { label: "Mostly reading/research with some hands-on", score: 4 },
+          { label: "Structured study — reading, research, formal learning", score: 5 }
+        ]
+      }
+    ]
+  },
+  {
+    name: "Change Orientation",
+    questions: [
+      {
+        text: "How do you generally feel about changes in your workplace?",
+        options: [
+          { label: "I actively seek change out", score: 1 },
+          { label: "Generally welcome it", score: 2 },
+          { label: "Neutral — depends on the change", score: 3 },
+          { label: "Prefer stability but can adapt", score: 4 },
+          { label: "Strongly prefer things to stay as they are", score: 5 }
+        ]
+      },
+      {
+        text: "When a change initiative is announced at work, what's your first instinct?",
+        options: [
+          { label: "Excitement — what's the opportunity here?", score: 1 },
+          { label: "Curiosity — tell me more", score: 2 },
+          { label: "Wait and see", score: 3 },
+          { label: "Caution — what are the risks?", score: 4 },
+          { label: "Scepticism — I want to understand this fully before I form a view", score: 5 }
+        ]
+      }
+    ]
+  },
+  {
+    name: "Risk Tolerance",
+    questions: [
+      {
+        text: "How comfortable are you taking significant risks at work?",
+        options: [
+          { label: "Very comfortable", score: 1 },
+          { label: "Somewhat comfortable", score: 2 },
+          { label: "Neutral", score: 3 },
+          { label: "Somewhat uncomfortable", score: 4 },
+          { label: "Very uncomfortable", score: 5 }
+        ]
+      },
+      {
+        text: "How do you approach decisions with high uncertainty?",
+        options: [
+          { label: "Confidently — I back my instincts", score: 1 },
+          { label: "Mostly confident with some caution", score: 2 },
+          { label: "Mix of confidence and caution", score: 3 },
+          { label: "Cautiously — I prefer more information first", score: 4 },
+          { label: "Very cautiously — I need as much information as possible", score: 5 }
+        ]
+      }
+    ]
+  },
+  {
+    name: "Innovation",
+    questions: [
+      {
+        text: "How do you respond to new ideas or changes in work processes?",
+        options: [
+          { label: "Very enthusiastic", score: 1 },
+          { label: "Generally open", score: 2 },
+          { label: "Neutral", score: 3 },
+          { label: "Some resistance until I understand it", score: 4 },
+          { label: "Prefer to stick with what works", score: 5 }
+        ]
+      },
+      {
+        text: "How comfortable are you with coming up with creative solutions?",
+        options: [
+          { label: "Very comfortable — I enjoy it", score: 1 },
+          { label: "Mostly comfortable", score: 2 },
+          { label: "Neutral", score: 3 },
+          { label: "Somewhat uncomfortable", score: 4 },
+          { label: "I prefer proven solutions", score: 5 }
+        ]
+      }
+    ]
+  },
+  {
+    name: "Decision-Making Style",
+    questions: [
+      {
+        text: "When making decisions, do you prefer established processes or open team discussion?",
+        options: [
+          { label: "Strong preference for open team discussion", score: 1 },
+          { label: "Some preference for discussion", score: 2 },
+          { label: "Mix of both", score: 3 },
+          { label: "Some preference for established processes", score: 4 },
+          { label: "Strong preference for established processes", score: 5 }
+        ]
+      },
+      {
+        text: "How comfortable are you being part of a team decision-making process?",
+        options: [
+          { label: "Very comfortable — I thrive in it", score: 1 },
+          { label: "Mostly comfortable", score: 2 },
+          { label: "Neutral", score: 3 },
+          { label: "Somewhat uncomfortable", score: 4 },
+          { label: "I prefer clear individual ownership of decisions", score: 5 }
+        ]
+      }
+    ]
+  },
+  {
+    name: "Learning Style",
+    questions: [
+      {
+        text: "Do you prefer structured learning environments or self-directed learning?",
+        options: [
+          { label: "Strong preference for self-directed learning", score: 1 },
+          { label: "Some preference for self-directed", score: 2 },
+          { label: "No strong preference", score: 3 },
+          { label: "Some preference for structured learning", score: 4 },
+          { label: "Strong preference for structured learning", score: 5 }
+        ]
+      },
+      {
+        text: "How do you feel about acquiring new skills through self-directed learning?",
+        options: [
+          { label: "Very comfortable — prefer it", score: 1 },
+          { label: "Mostly comfortable", score: 2 },
+          { label: "Neutral", score: 3 },
+          { label: "Somewhat uncomfortable", score: 4 },
+          { label: "Very uncomfortable — I need guidance", score: 5 }
+        ]
+      }
+    ]
+  },
+  {
+    name: "Conflict Resolution",
+    questions: [
+      {
+        text: "How do you prefer to handle conflicts at work?",
+        options: [
+          { label: "Informally — direct conversation in the moment", score: 1 },
+          { label: "Mostly informal, occasionally escalate", score: 2 },
+          { label: "Mix of both depending on situation", score: 3 },
+          { label: "Prefer some structure to the process", score: 4 },
+          { label: "Strong preference for formal mediation or process", score: 5 }
+        ]
+      },
+      {
+        text: "How comfortable are you resolving conflicts informally?",
+        options: [
+          { label: "Very comfortable", score: 1 },
+          { label: "Mostly comfortable", score: 2 },
+          { label: "Neutral", score: 3 },
+          { label: "Somewhat uncomfortable", score: 4 },
+          { label: "Very uncomfortable — I need a formal process", score: 5 }
+        ]
+      }
+    ]
+  }
+];
+
+const profiles = [
+  {
+    band: "Predominantly Exploratory",
+    range: [0, 20],
+    color: "#4ecdc4",
+    textColor: "#1a5c57",
+    description: "You tend to engage with information in an active, intuitive way. You're energised by conversation, stories, and real-world examples. You're likely to respond well to something you can watch, share, or talk about — and you often make sense of things by doing rather than reading. When it comes to change at work, you typically want the human story before the technical detail.",
+    formats: [
+      "Short videos — especially people talking to camera in plain language",
+      "Conversations and Q&A sessions",
+      "Storytelling: real examples, case studies, peer voices",
+      "Visual summaries and infographics",
+      "Interactive formats — polls, quick check-ins"
+    ]
+  },
+  {
+    band: "Leaning Towards Exploratory",
+    range: [21, 30],
+    color: "#7ecfc9",
+    textColor: "#1a5c57",
+    description: "You're comfortable with both action-oriented and reflective approaches to information. You tend to engage readily with informal, conversational communication but also appreciate a summary or written overview when you want to go deeper. You're flexible in how you receive information and can usually find your way into a topic through either the story or the detail.",
+    formats: [
+      "A mix of video and written summaries",
+      "Informal briefings or team conversations",
+      "Visuals with supporting written notes",
+      "Access to deeper material for when you want it",
+      "Peer conversations and informal Q&A"
+    ]
+  },
+  {
+    band: "Balanced",
+    range: [31, 40],
+    color: "#a0b4c8",
+    textColor: "#1a3a5c",
+    description: "You sit comfortably in the middle — you can engage with both intuitive, conversational communication and more structured, evidence-based material, depending on the context. You're adaptable in how you absorb information and tend to appreciate having a range of formats available so you can choose what works for you in the moment.",
+    formats: [
+      "A range of formats — video, written briefs, and conversation",
+      "Clear signposting of where to find more detail",
+      "Structured summaries with optional depth",
+      "Team discussions with written follow-up",
+      "A shared space where you can explore at your own pace"
+    ]
+  },
+  {
+    band: "Leaning Towards Structured",
+    range: [41, 50],
+    color: "#6a8faf",
+    textColor: "white",
+    description: "You tend to engage most comfortably with information when it's well-organised and gives you room to think. You appreciate knowing what's coming, having time to read and reflect, and being able to come back with questions once you've had a chance to process. You're likely to form your best judgements after careful consideration rather than in the moment.",
+    formats: [
+      "Well-structured written briefings and summaries",
+      "Clear timelines — knowing what information is coming and when",
+      "Documented Q&A or FAQs you can read at your own pace",
+      "Reference material you can return to",
+      "Formal briefings with opportunity to ask questions"
+    ]
+  },
+  {
+    band: "Predominantly Structured",
+    range: [51, 100],
+    color: "#1a3a5c",
+    textColor: "white",
+    description: "You engage with information most effectively when it's thorough, evidence-based, and logically structured. You're likely to want to understand the full picture before forming a view — including timelines, evidence, methodology, and clear answers to the questions you'll inevitably have. This isn't about being cautious for its own sake — it's how you do your best thinking, and it's a genuine strength.",
+    formats: [
+      "Detailed written briefings with clear structure and headings",
+      "Evidence-based summaries with sources available",
+      "Advance notice of what's coming and when",
+      "Clear pathways to ask questions and get substantive answers",
+      "Formal presentations with supporting documentation",
+      "Reference materials and FAQs available from the outset"
+    ]
+  }
+];
+
+// Build question screens
+let currentScreen = 0;
+const screens = ['intro', ...dimensions.map((_, i) => `dim-${i}`), 'results'];
+const answers = {};
+
+function buildQuestions() {
+  const container = document.getElementById('question-screens');
+  dimensions.forEach((dim, di) => {
+    const div = document.createElement('div');
+    div.className = 'screen';
+    div.id = `screen-dim-${di}`;
+
+    let html = `<div class="dimension-card">
+      <div class="dimension-title">${dim.name}</div>`;
+
+    dim.questions.forEach((q, qi) => {
+      const key = `${di}_${qi}`;
+      html += `<div class="question-block">
+        <div class="question-text">${q.text}</div>
+        <div class="options" id="opts-${key}">`;
+      q.options.forEach((opt, oi) => {
+        html += `<label class="option-label" onclick="selectOption('${key}', ${oi}, ${opt.score}, this)">
+          <span class="radio-dot"></span>
+          <input type="radio" name="${key}" value="${opt.score}">
+          ${opt.label}
+        </label>`;
+      });
+      html += `</div></div>`;
+    });
+
+    const isLast = di === dimensions.length - 1;
+    html += `</div>
+    <div class="nav-row">
+      <button class="btn btn-secondary" onclick="goBack(${di})">← Back</button>
+      <button class="btn btn-primary" id="next-btn-${di}" onclick="goNext(${di})">${isLast ? 'See my results →' : 'Next →'}</button>
+    </div>
+    <div class="validation-msg" id="val-${di}"></div>`;
+
+    div.innerHTML = html;
+    container.appendChild(div);
+  });
+}
+
+function selectOption(key, optIdx, score, el) {
+  const opts = document.querySelectorAll(`#opts-${key} .option-label`);
+  opts.forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  answers[key] = score;
+  updateProgress();
+}
+
+function updateProgress() {
+  const total = dimensions.reduce((s, d) => s + d.questions.length, 0);
+  const answered = Object.keys(answers).length;
+  const pct = Math.round((answered / total) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = answered > 0 ? `${answered} of ${total} questions answered` : '';
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(`screen-${id}`).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function startSurvey() {
+  showScreen('dim-0');
+}
+
+function goNext(di) {
+  const dim = dimensions[di];
+  let allAnswered = true;
+  dim.questions.forEach((q, qi) => {
+    if (answers[`${di}_${qi}`] === undefined) allAnswered = false;
+  });
+  if (!allAnswered) {
+    document.getElementById(`val-${di}`).textContent = 'Please answer both questions before continuing.';
+    return;
+  }
+  document.getElementById(`val-${di}`).textContent = '';
+  if (di < dimensions.length - 1) {
+    showScreen(`dim-${di + 1}`);
+  } else {
+    showResults();
+  }
+}
+
+function goBack(di) {
+  if (di === 0) showScreen('intro');
+  else showScreen(`dim-${di - 1}`);
+}
+
+function showResults() {
+  let total = 0;
+  Object.values(answers).forEach(v => total += v);
+
+  const profile = profiles.find(p => total >= p.range[0] && total <= p.range[1]) || profiles[profiles.length - 1];
+
+  document.getElementById('result-badge').textContent = profile.band;
+  document.getElementById('result-badge').style.background = profile.color;
+  document.getElementById('result-badge').style.color = profile.textColor;
+  document.getElementById('result-title').textContent = profile.band;
+  document.getElementById('result-description').textContent = profile.description;
+
+  const list = document.getElementById('result-comms-list');
+  list.innerHTML = profile.formats.map(f => `<li>${f}</li>`).join('');
+
+  // Spectrum marker position
+  const maxScore = dimensions.reduce((s, d) => s + d.questions.length * 5, 0);
+  const pct = Math.min(Math.max((total / maxScore) * 100, 2), 98);
+  document.getElementById('spectrum-marker').style.left = pct + '%';
+        document.getElementById('score-display').textContent = `Your pattern sits at position ${total} on a spectrum of ${maxScore}`;
+
+  document.getElementById('progressFill').style.width = '100%';
+  document.getElementById('progressLabel').textContent = 'Complete';
+
+  showScreen('results');
+}
+
+function retake() {
+  Object.keys(answers).forEach(k => delete answers[k]);
+  updateProgress();
+  document.getElementById('progressFill').style.width = '0%';
+  document.getElementById('progressLabel').textContent = '';
+  showScreen('intro');
+}
+
+buildQuestions();
+</script>
+<div class="footer">
+  <p>© 2025 GC Change Projects. All rights reserved.</p>
+  <p>The Change Communication Preference Profiler is the intellectual property of GC Change Projects. Unauthorised reproduction, adaptation, or commercial use — in whole or in part — without prior written permission is prohibited. This tool may be shared freely for individual, non-commercial use provided this attribution remains intact.</p>
+</div>
+</html>
